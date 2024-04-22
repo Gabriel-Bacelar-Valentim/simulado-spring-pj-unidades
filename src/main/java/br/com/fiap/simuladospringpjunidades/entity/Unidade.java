@@ -13,7 +13,15 @@ import lombok.NoArgsConstructor;
 @Builder
 
 @Entity
-@Table(name = "TB_UNIDADE")
+@Table(
+        name = "TB_UNIDADE",
+        // UK para garantir que não se tenha mais de uma unidade com a mesma SIGLA na mesma unidade macro.
+        uniqueConstraints = {
+                @UniqueConstraint(
+                        name = "UK_UNIDADE_SIGLA", columnNames = {"SG_UNIDADE", "MACRO"}
+                )
+        }
+)
 public class Unidade {
 
     @Id
@@ -31,7 +39,7 @@ public class Unidade {
     @Column(name = "DS_UNIDADE")
     private String descricao;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE })
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(
             name = "MACRO",
             referencedColumnName = "ID_UNIDADE",

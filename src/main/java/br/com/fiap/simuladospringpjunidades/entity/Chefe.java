@@ -16,15 +16,12 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "TB_CHEFE",
-//UK para garantir que não se tenha mais de um usuário (chefe),
+// UK para garantir que não se tenha mais de um usuário (chefe),
 // na mesma unidade com a data fim. Ou seja devemos evitar de ter
 // para o mesmo usuário dois registros ativos de chefia para uma unidade.
-
         uniqueConstraints = {
-
+                @UniqueConstraint(name = "UK_CHEFE_UNIDADE", columnNames = {"USUARIO", "UNIDADE", "DT_FIM"})
         }
-
-
 )
 public class Chefe {
 

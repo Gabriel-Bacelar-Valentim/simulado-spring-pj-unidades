@@ -15,7 +15,12 @@ import java.time.LocalDate;
 @Builder
 
 @Entity
-@Table(name = "TB_PESSOA")
+@Table(name = "TB_PESSOA",
+        //UK para garantir que não se tenha mais de uma pessoa com o mesmo e-mail.
+        uniqueConstraints = {
+                @UniqueConstraint(name = "UK_EMAIL_PESSOA", columnNames = "EMAIL_PESSOA")
+        }
+)
 public class Pessoa {
 
     @Id

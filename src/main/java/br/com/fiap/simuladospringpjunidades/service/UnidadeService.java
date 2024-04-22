@@ -1,0 +1,64 @@
+package br.com.fiap.simuladospringpjunidades.service;
+
+import br.com.fiap.simuladospringpjunidades.dto.request.UnidadeRequest;
+import br.com.fiap.simuladospringpjunidades.dto.response.UnidadeResponse;
+import br.com.fiap.simuladospringpjunidades.entity.Unidade;
+import br.com.fiap.simuladospringpjunidades.repository.UnidadeRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Objects;
+
+@Service
+public class UnidadeService implements ServiceDTO<Unidade, UnidadeRequest, UnidadeResponse> {
+
+    @Autowired
+    private UnidadeRepository repo;
+
+    @Override
+    public Unidade toEntity(UnidadeRequest r) {
+
+        Unidade macro = repo.findById(r.macro().id()).orElse(null);
+
+        return Unidade.builder()
+                .nome(r.nome())
+                .sigla(r.sigla())
+                .descricao(r.descricao())
+                .macro(macro)
+                .build();
+    }
+
+    @Override
+    public UnidadeResponse toResponse(Unidade e) {
+        if (Objects.isNull(e)) return null;
+        return UnidadeResponse.builder()
+                .id(e.getId())
+                .nome(e.getNome())
+                .sigla(e.getSigla())
+                .descricao(e.getDescricao())
+                .macro(this.toResponse(e.getMacro()))
+                .build();
+    }
+
+    @Override
+    public List<Unidade> findAll() {
+        return repo.findAll();
+    }
+
+    @Override
+    public List<Unidade> findAll(Example<Unidade> example) {
+        return repo.findAll(example);
+    }
+
+    @Override
+    public Unidade findById(Long id) {
+        return repo.findById(id).orElse(null);
+    }
+
+    @Override
+    public Unidade save(Unidade e) {
+        return repo.save(e);
+    }
+}
