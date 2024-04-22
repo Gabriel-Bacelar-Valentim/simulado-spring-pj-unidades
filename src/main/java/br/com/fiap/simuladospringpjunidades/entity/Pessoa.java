@@ -1,8 +1,6 @@
 package br.com.fiap.simuladospringpjunidades.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,17 +14,26 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Builder
 
+@Entity
+@Table(name = "TB_PESSOA")
 public class Pessoa {
 
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SQ_PESSOA")
+    @SequenceGenerator(name = "SQ_PESSOA", sequenceName = "SQ_PESSOA", allocationSize = 1)
+    @Column(name = "ID_PESSOA")
     private Long id;
 
+    @Column(name = "NM_PESSOA")
     private String nome;
 
+    @Column(name = "SNM_PESSOA")
     private String sobrenome;
 
+    @Column(name = "EMAIL_PESSOA")
     private String email;
 
+    @Column(name = "DT_NASCIMENTO")
     private LocalDate nascimento;
 
     @Enumerated(EnumType.STRING)
